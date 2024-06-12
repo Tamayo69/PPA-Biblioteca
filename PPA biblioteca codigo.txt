@@ -1,0 +1,348 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+struct Usuario {
+    string nombre;
+    string clave;
+};
+
+struct Estudiante {
+    string nombre;
+    long long int documento;
+    int edad;
+    string correo;
+};
+
+struct Libro {
+    int codigo;
+    string nombre;
+    string categoria;
+};
+
+struct Prestamo {
+    int codigoLibro;
+    string fechaPrestamo;
+    Estudiante estudiante;
+};
+
+struct Devoluciones {
+    Prestamo prestamo;
+    string fechaDevolucion;
+    int diasPrestados;
+    float multa;
+};
+
+int main() {
+    vector<Usuario> usuarios = {{"Admin1", "1234"}, {"Admin2", "1234"}};
+    vector<Libro> libros;
+    vector<Estudiante> estudiantes;
+    vector<Prestamo> prestamos;
+    vector<Devoluciones> devoluciones;
+
+    string nombreUsuario, claveUsuario;
+    bool autenticado = false;
+
+    while (!autenticado) {
+        cout << "Iniciar sesión:" << endl;
+        cout << "Nombre de usuario: ";
+        cin >> nombreUsuario;
+        cout << "Clave: ";
+        cin >> claveUsuario;
+
+        for (const Usuario &usuario : usuarios) {
+            if (usuario.nombre == nombreUsuario && usuario.clave == claveUsuario) {
+                autenticado = true;
+                cout << "Inicio de sesión exitoso." << endl;
+                cout << "---------------------------------------------------------------------"<< endl;
+                break;
+            }
+        }
+
+        if (!autenticado) {
+            cout << "El usuario o clave son incorrectos. Inténtelo nuevamente." << endl;
+            cout << "---------------------------------------------------------------------"<< endl;
+        }
+    }
+
+    int opcion;
+
+    do {
+        cout << "Menú de opciones" << endl;
+        cout << "1. Inventario de libros" << endl;
+        cout << "2. Gestionar datos de estudiantes" << endl;
+        cout << "3. Registrar préstamo de libro" << endl;
+        cout << "4. Registrar devolución de libro" << endl;
+        cout << "5. Ver informes generales de préstamos y devoluciones" << endl;
+        cout << "6. Salir" << endl;
+        cout << "Ingrese la opción deseada: " << endl;
+        cin >> opcion;
+        cout << "---------------------------------------------------------------------"<< endl;
+
+        switch (opcion) {
+            case 1: {
+                int opcionInventario;
+                do {
+                    cout << "Submenú de inventario de libros" << endl;
+                    cout << "1. Agregar libro" << endl;
+                    cout << "2. Ver libros registrados" << endl;
+                    cout << "3. Volver al menú principal" << endl;
+                    cout << "Ingrese la opción deseada: "<< endl;
+                    cin >> opcionInventario;
+                    cout << "---------------------------------------------------------------------"<< endl;
+
+                    switch (opcionInventario) {
+                        case 1: {
+                            Libro libro1;
+                            cout << "Ingrese el código del libro: ";
+                            cin >> libro1.codigo;
+                            cout << "Ingrese el nombre del libro: ";
+                            cin >> libro1.nombre;
+                            cout << "Ingrese la categoría del libro: ";
+                            cin >> libro1.categoria;
+                            libros.push_back(libro1);
+                            cout << "Libro agregado al inventario correctamente." << endl;
+                            cout << "---------------------------------------------------------------------"<< endl;
+                            break;
+                        }
+                        case 2: {
+                            if (libros.empty()) {
+                                cout << "No hay libros registrados." << endl;
+                            } else {
+                                cout << "Libros registrados:" << endl;
+                                for (const auto& libro : libros) {
+                                    cout << "Código: " << libro.codigo << endl;
+                                    cout << "Nombre: " << libro.nombre << endl;
+                                    cout << "Categoría: " << libro.categoria << endl;
+                                    cout << "---------------------------------------------------------------------"<< endl;
+                                }
+                            }
+                            break;
+                        }
+                        case 3:
+                            cout << "Volviendo al menú principal..." << endl;
+                            cout << "---------------------------------------------------------------------"<< endl;
+                            break;
+                        default:
+                            cout << "Opción inválida. Por favor, seleccione una opción válida del submenú." << endl;
+                            cout << "---------------------------------------------------------------------"<< endl;
+                    }
+                } while (opcionInventario != 3);
+                break;
+            }
+            case 2: {
+                int opcionInventarioEst;
+                do {
+                    cout << "Submenú de estudiantes registrados" << endl;
+                    cout << "1. Agregar estudiante" << endl;
+                    cout << "2. Ver estudiantes registrados" << endl;
+                    cout << "3. Volver al menú principal" << endl;
+                    cout << "Ingrese la opción deseada: "<< endl;
+                    cin >> opcionInventarioEst;
+                    cout << "---------------------------------------------------------------------"<< endl;
+
+                    switch (opcionInventarioEst) {
+                        case 1: {
+                            int respuestaCarnet;
+                            cout << "¿El carnet del estudiante se encuentra actualizado?" << endl;
+                            cout << "1. Sí" << endl;
+                            cout << "2. No" << endl;
+                            cin >> respuestaCarnet;
+                            cout << "---------------------------------------------------------------------"<< endl;
+                            if (respuestaCarnet == 1) {
+                                cout << "Gestionar datos de estudiantes" << endl;
+                                Estudiante estudiante1;
+                                cout << "Ingrese el nombre del estudiante: ";
+                                cin.ignore();
+                                getline(cin, estudiante1.nombre);
+                                cout << "Ingrese el documento del estudiante: ";
+                                cin >> estudiante1.documento;
+                                cout << "Ingrese la edad del estudiante: ";
+                                cin >> estudiante1.edad;
+                                cout << "Ingrese el correo institucional del estudiante: ";
+                                cin >> estudiante1.correo;
+                                estudiantes.push_back(estudiante1);
+                                cout << "Datos del estudiante agregados correctamente." << endl;
+                                cout << "---------------------------------------------------------------------"<< endl;
+                            } else {
+                                cout << "No es posible gestionar los datos del estudiante debido a que el " << endl;
+                                cout << "carnet está desactualizado." << endl;
+                                cout << "---------------------------------------------------------------------"<< endl;
+                            }
+                            break;
+                        }
+                        case 2: {
+                            if (estudiantes.empty()) {
+                                cout << "No hay estudiantes registrados." << endl;
+                            } else {
+                                cout << "Estudiantes registrados:" << endl;
+                                for (const auto& estudiante : estudiantes) {
+                                    cout << "Nombre: " << estudiante.nombre << endl;
+                                    cout << "Documento: " << estudiante.documento << endl;
+                                    cout << "Edad: " << estudiante.edad << endl;
+                                    cout << "Correo: " << estudiante.correo << endl;
+                                    cout << "---------------------------------------------------------------------"<< endl;
+                                }
+                            }
+                            break;
+                        }
+                        case 3:
+                            cout << "Volviendo al menú principal..." << endl;
+                            cout << "---------------------------------------------------------------------"<< endl;
+                            break;
+                        default:
+                            cout << "Opción inválida. Por favor, seleccione una opción válida del submenú." << endl;
+                            cout << "---------------------------------------------------------------------"<< endl;
+                    }
+                } while (opcionInventarioEst != 3);
+                break;
+            }
+            case 3: {
+                cout << "Registrar préstamo de libro" << endl;
+                if (libros.empty()) {
+                    cout << "No hay libros registrados. Primero agregue un libro al inventario." << endl;
+                    cout << "---------------------------------------------------------------------"<< endl;
+                    break;
+                }
+                Prestamo prestamo1;
+                cout << "Lista de libros registrados:" << endl;
+                for (size_t i = 0; i < libros.size(); ++i) {
+                    cout << i + 1 << ". " << libros[i].nombre << " (Código: " << libros[i].codigo << ", Categoría: " << libros[i].categoria << ")" << endl;
+                }
+                int indiceLibro;
+                cout << "Ingrese el índice del libro que se va a prestar: ";
+                cin >> indiceLibro;
+                if (indiceLibro <= 0 || indiceLibro > libros.size()) {
+                    cout << "Índice de libro inválido." << endl;
+                    cout << "---------------------------------------------------------------------"<< endl;
+                    break;
+                }
+                bool libroDisponible = true;
+                for (const Prestamo &prestamo : prestamos) {
+                    if (prestamo.codigoLibro == libros[indiceLibro - 1].codigo) {
+                        libroDisponible = false;
+                        cout << "El libro ya está prestado. No se puede prestar nuevamente." << endl;
+                        cout << "---------------------------------------------------------------------"<< endl;
+                        break;
+                    }
+                }
+                if (libroDisponible) {
+                    prestamo1.codigoLibro = libros[indiceLibro - 1].codigo;
+                    cout << "Ingrese la fecha del préstamo (formato DD/MM/AAAA): ";
+                    cin >> prestamo1.fechaPrestamo;
+                    cout << "Lista de estudiantes registrados:" << endl;
+                    for (size_t i = 0; i < estudiantes.size(); ++i) {
+                        cout << i + 1 << ". " << "Nombre: " << estudiantes[i].nombre << ", Documento: " << estudiantes[i].documento << endl;
+                    }
+                    int indiceEstudiante;
+                    cout << "Ingrese el índice del estudiante que realiza el préstamo: ";
+                    cin >> indiceEstudiante;
+                    if (indiceEstudiante <= 0 || indiceEstudiante > estudiantes.size()) {
+                        cout << "Índice de estudiante inválido." << endl;
+                        cout << "---------------------------------------------------------------------"<< endl;
+                        break;
+                    }
+                    prestamo1.estudiante = estudiantes[indiceEstudiante - 1];
+                    prestamos.push_back(prestamo1);
+                    cout << "Préstamo registrado correctamente." << endl;
+                    cout << "---------------------------------------------------------------------"<< endl;
+                }
+                break;
+            }
+            case 4: {
+                cout << "Seleccionaste la opción 4: Registrar devolución de libro" << endl;
+                if (prestamos.empty()) {
+                    cout << "No hay préstamos registrados." << endl;
+                    cout << "---------------------------------------------------------------------"<< endl;
+                    break;
+                }
+                cout << "Lista de préstamos registrados:" << endl;
+                for (size_t i = 0; i < prestamos.size(); ++i) {
+                    cout << i + 1 << ". Código del libro: " << prestamos[i].codigoLibro << ", Fecha del préstamo: " << prestamos[i].fechaPrestamo << ", Estudiante: " << prestamos[i].estudiante.nombre << endl;
+                }
+                int indicePrestamo;
+                cout << "Ingrese el índice del préstamo que se va a devolver: ";
+                cin >> indicePrestamo;
+                if (indicePrestamo <= 0 || indicePrestamo > prestamos.size()) {
+                    cout << "Índice de préstamo inválido." << endl;
+                    cout << "---------------------------------------------------------------------"<< endl;
+                    break;
+                }
+                int codigoLibroDevolucion = prestamos[indicePrestamo - 1].codigoLibro;
+                Devoluciones devolucion;
+                devolucion.prestamo = prestamos[indicePrestamo - 1];
+                cout << "Ingrese la fecha de devolución (formato DD/MM/AAAA): ";
+                cin >> devolucion.fechaDevolucion;
+                cout << "Ingrese el número de días prestados: ";
+                int diasPrestados;
+                cin >> diasPrestados;
+                const int MAX_DIAS_PRESTAMO = 5;
+                if (diasPrestados > MAX_DIAS_PRESTAMO) {
+                    int diasExcedidos = diasPrestados - MAX_DIAS_PRESTAMO;
+                    devolucion.multa = diasExcedidos * 2000;
+                } else {
+                    devolucion.multa = 0;
+                }
+                devolucion.diasPrestados = diasPrestados;
+                devoluciones.push_back(devolucion);
+                prestamos.erase(prestamos.begin() + indicePrestamo - 1);
+                cout << "Devolución registrada correctamente." << endl;
+                cout << "---------------------------------------------------------------------"<< endl;
+                break;
+            }
+            case 5: {
+                cout << "Informes generales:" << endl;
+                for (size_t i = 0; i < prestamos.size(); ++i) {
+                    cout << "Préstamo sin devolución " << i + 1 << ":" << endl;
+                    cout << "Código del libro: " << prestamos[i].codigoLibro << endl;
+                    cout << "Fecha del préstamo: " << prestamos[i].fechaPrestamo << endl;
+                    cout << "Estudiante: " << prestamos[i].estudiante.nombre << endl;
+                    cout << "Documento del estudiante: " << prestamos[i].estudiante.documento << endl;
+                    cout << "Nombre del libro: ";
+                    for (const Libro &libro : libros) {
+                        if (libro.codigo == prestamos[i].codigoLibro) {
+                            cout << libro.nombre << endl;
+                            break;
+                        }
+                    }
+                    cout << endl;
+                    cout << "---------------------------------------------------------------------"<< endl;
+                }
+                if (devoluciones.empty()) {
+                    cout << "No hay informes." << endl;
+                    cout << "---------------------------------------------------------------------"<< endl;
+                    break;
+                }
+                for (size_t i = 0; i < devoluciones.size(); ++i) {
+                    cout << "Devolución " << i + 1 << ":" << endl;
+                    cout << "Fecha de devolución: " << devoluciones[i].fechaDevolucion << endl;
+                    cout << "Días prestados: " << devoluciones[i].diasPrestados << endl;
+                    cout << "Multa: " << devoluciones[i].multa << endl;
+                    cout << "Estudiante: " << devoluciones[i].prestamo.estudiante.nombre << endl;
+                    cout << "Documento del estudiante: " << devoluciones[i].prestamo.estudiante.documento << endl;
+                    cout << "Nombre del libro: ";
+                    for (const Libro &libro : libros) {
+                        if (libro.codigo == devoluciones[i].prestamo.codigoLibro) {
+                            cout << libro.nombre << endl;
+                            break;
+                        }
+                    }
+                    cout << endl;
+                    cout << "---------------------------------------------------------------------"<< endl;
+                }
+                break;
+            }
+            case 6: {
+                cout << "Saliendo del programa..." << endl;
+                break;
+            }
+            default:
+                cout << "Opción inválida. Por favor, seleccione una opción válida del menú." << endl;
+                cout << "---------------------------------------------------------------------"<< endl;
+        }
+    } while (opcion != 6);
+
+    return 0;
+}
